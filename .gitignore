@@ -7,3 +7,7 @@
 /WebDriverTest1/bin/Debug
 /WebDriverTest1/obj/Debug
 /packages
+/TestCefSharp/bin/x64/Debug
+/TestCefSharp/obj
+/WebDriverTest1/bin/x64/Debug
+/WebDriverTest1/obj/x64/Debug

@@ -1,7 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.IE;
-using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +21,9 @@ namespace WebDriverTest1
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindowIE : Window
+    public partial class MainWindowReuseChrome : Window
     {
-        public MainWindowIE()
+        public MainWindowReuseChrome()
         {
             InitializeComponent();
         }
@@ -33,19 +32,17 @@ namespace WebDriverTest1
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var chromeDriverService = InternetExplorerDriverService.CreateDefaultService();
+            var chromeDriverService = ChromeDriverService.CreateDefaultService();
 
 
-            var option = new InternetExplorerOptions();
-            option.PageLoadStrategy = PageLoadStrategy.None;
-
+            var option = new ChromeOptions();
             //option.BinaryLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
 
-
+            option.DebuggerAddress = "127.0.0.1:18888"; //这一行可以不用打开新的浏览器进程
             //option.AddArgument("remote-debugging-port=port#");
 
 
-            var driver = new InternetExplorerDriver(chromeDriverService, option);
+            var driver = new ChromeDriver(chromeDriverService, option);
 
             //Puts a Implicit wait, Will wait for 10 seconds before throwing exception
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
@@ -66,21 +63,10 @@ namespace WebDriverTest1
 
 
 
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
-
-            wait.PollingInterval = TimeSpan.FromMilliseconds(500);
-
-            IWebElement firstResult = wait.Until(ea => ea.FindElement(By.Id("navs")));
-
-
 
             // Scroll down the webpage by 5000 pixels
             var js = (IJavaScriptExecutor)driver;
             js.ExecuteScript("scrollBy(0, 100)");
-
-
-         
-
 
             // Click on the Search button
             driver.FindElement(By.LinkText("Access教程")).Click();//原文出自【易百教程】，商业转载请联系作者获得授权，非商业请保留原文链接：https://www.yiibai.com/selenium/selenium-webdriver-running-test-on-chrome-browser.html#article-start
@@ -93,7 +79,7 @@ namespace WebDriverTest1
 
 
 
-            Console.WriteLine("fffffffff");
+            Console.WriteLine(step++);
 
             //driver.Quit();
             //Console.WriteLine(" 1111111 " + DateTime.Now.ToString("mm:ss"));
